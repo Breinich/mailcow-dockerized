@@ -311,11 +311,6 @@ services:
         - "${POP_PORT:-110}:110"
         - "${POPS_PORT:-995}:995"
         - "${SIEVE_PORT:-4190}:4190"
-        - "${IMAP_PORT_HAPROXY:-10143}:10143"
-        - "${IMAPS_PORT_HAPROXY:-10993}:10993"
-        - "${POP_PORT_HAPROXY:-10110}:10110"
-        - "${POPS_PORT_HAPROXY:-10995}:10995"
-        - "${SIEVE_PORT_HAPROXY:-14190}:14190"
       restart: always
       tty: true
       labels:
@@ -382,9 +377,6 @@ services:
         - "${SMTP_PORT:-25}:25"
         - "${SMTPS_PORT:-465}:465"
         - "${SUBMISSION_PORT:-587}:587"
-        - "${SMTP_PORT_HAPROXY:-10025}:10025"
-        - "${SMTPS_PORT_HAPROXY:-10465}:10465"
-        - "${SUBMISSION_PORT_HAPROXY:-10587}:10587"
       restart: always
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
@@ -673,6 +665,29 @@ services:
         mailcow-network:
           aliases:
             - ofelia
+            
+    backup-mailcow:
+      hostname: mailcow
+      image: aterfax/pbs-client:latest
+      restart: unless-stopped
+      environment:
+        CRON_BACKUP_ONLY: ${CRON_BACKUP_ONLY}
+        CRON_SCHEDULE: ${CRON_SCHEDULE}
+        PBS_API_KEY_NAME: ${PBS_API_KEY_NAME}
+        PBS_API_KEY_SECRET: ${PBS_API_KEY_SECRET}
+        PBS_DATASTORE: ${PBS_DATASTORE}
+        PBS_DATASTORE_NS: ${PBS_DATASTORE_NS}
+        PBS_ENCRYPTION_PASSWORD: ${PBS_ENCRYPTION_PASSWORD}
+        PBS_ENDPOINT: ${PBS_ENDPOINT}
+      tmpfs:
+        - /run:exec
+      volumes:
+        - type: tmpfs
+          target: /tmp
+          tmpfs:
+            size: 1073741824
+        - ${PBS_CONFIG_LOCATION}:/root/.config/proxmox-backup/
+        - ${ROOT}:/backups/data
 
 networks:
   mailcow-network:
