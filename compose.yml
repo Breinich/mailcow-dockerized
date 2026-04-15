@@ -668,7 +668,7 @@ services:
             
     backup-mailcow:
       hostname: mailcow
-      image: aterfax/pbs-client:latest
+      image: codeberg.org/email/pbs-mailcow:latest
       restart: unless-stopped
       environment:
         CRON_BACKUP_ONLY: ${CRON_BACKUP_ONLY}
@@ -687,7 +687,7 @@ services:
           tmpfs:
             size: 1073741824
         - ${PBS_CONFIG_LOCATION}:/root/.config/proxmox-backup/
-        - ${ROOT}:/backups/data
+        - ${ROOT}:/backup/config:ro
 
 networks:
   mailcow-network:
