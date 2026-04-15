@@ -668,7 +668,7 @@ services:
             
     backup-mailcow:
       hostname: mailcow
-      image: codeberg.org/email/pbs-mailcow:latest
+      image: codeberg.org/bajnok-lab/email/pbs-mailcow:latest
       restart: unless-stopped
       environment:
         CRON_BACKUP_ONLY: ${CRON_BACKUP_ONLY}
