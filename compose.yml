@@ -688,6 +688,7 @@ services:
           target: /tmp
           tmpfs:
             size: 1073741824
+        - /var/run/docker.sock:/var/run/docker.sock:ro
         - ${PBS_CONFIG_LOCATION}:/root/.config/proxmox-backup/
         - ${ROOT}:/backups/config
 
