@@ -687,7 +687,7 @@ services:
           tmpfs:
             size: 1073741824
         - ${PBS_CONFIG_LOCATION}:/root/.config/proxmox-backup/
-        - ${ROOT}:/backup/config:ro
+        - ${ROOT}:/backups/config
 
 networks:
   mailcow-network:
