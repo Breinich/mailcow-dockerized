@@ -306,11 +306,11 @@ services:
         - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-mailcow-dockerized}
       ports:
         - "${DOVEADM_PORT:-127.0.0.1:19991}:12345"
-        - "${IMAP_PORT:-143}:143"
-        - "${IMAPS_PORT:-993}:993"
-        - "${POP_PORT:-110}:110"
-        - "${POPS_PORT:-995}:995"
-        - "${SIEVE_PORT:-4190}:4190"
+        - "${IMAP_PORT:-143}:10143"
+        - "${IMAPS_PORT:-993}:10993"
+        - "${POP_PORT:-110}:10110"
+        - "${POPS_PORT:-995}:10995"
+        - "${SIEVE_PORT:-4190}:14190"
       restart: always
       tty: true
       labels:
