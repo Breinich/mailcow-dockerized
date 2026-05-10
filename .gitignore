@@ -11,6 +11,7 @@ data/conf/rspamd/dkim/*
 data/conf/sogo/*.creds
 data/conf/phpfpm/sogo-sso/sogo-sso.pass
 data/conf/rspamd/override.d/worker-controller-password.inc
+.env
 
 # ==========================================
 # 2. PERSISTENT DATA & LOGS (TOO HEAVY)
@@ -55,3 +56,9 @@ data/assets/*
 data/conf/acme/dns-01.conf
 data/conf/rspamd/local.d/fuzzy_check.conf
 data/conf/rspamd/local.d/redis.conf
+# Ignore SQL configuration files containing DB passwords
+data/conf/postfix/sql/*
+data/conf/dovecot/sql/*
+
+data/conf/dovecot/dovecot-master.passwd
+data/conf/dovecot/dovecot-master.userdb
