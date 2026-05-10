@@ -52,3 +52,6 @@ data/assets/*
 !data/conf/rspamd/override.d/
 !docker-compose.override.yml
 !mailcow.conf.example
+data/conf/acme/dns-01.conf
+data/conf/rspamd/local.d/fuzzy_check.conf
+data/conf/rspamd/local.d/redis.conf
