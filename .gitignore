@@ -85,3 +85,32 @@ data/web/*
 !data/web/img/custom-logo.png
 data/Dockerfiles/*
 
+# --- IGNORE APPLICATION CODE (The "Noise") ---
+data/web/*
+data/Dockerfiles/*
+data/assets/*
+
+# --- IGNORE SENSITIVE DATA (The "Danger") ---
+mailcow.conf
+mailcow.conf_backup
+data/assets/ssl/*
+data/conf/rspamd/dkim/*
+data/conf/sogo/*.creds
+data/conf/phpfpm/sogo-sso/sogo-sso.pass
+*.pem
+*.key
+
+# --- IGNORE PERSISTENT DATA (The "Heavy") ---
+data/mysql/*
+data/vmail/*
+data/redis/*
+data/rspamd/*
+data/conf/rspamd/custom/*.map.db
+**/cache/*
+
+# --- KEEP YOUR ACTUAL CONFIGS (The "Gold") ---
+!data/conf/postfix/extra.cf
+!data/conf/dovecot/extra.conf
+!data/conf/rspamd/local.d/*
+!data/conf/rspamd/override.d/*
+!docker-compose.override.yml
