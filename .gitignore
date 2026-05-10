@@ -80,3 +80,8 @@ data/conf/postfix/postfix-tlspol
 
 # custom rules
 data/web/inc
+.env
+data/web/*
+!data/web/img/custom-logo.png
+data/Dockerfiles/*
+
