@@ -12,8 +12,6 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gitleaks
-        # This runs the specific step inside the container, 
-        # while 'checkout' runs on the host runner.
         uses: docker://zricethezav/gitleaks:latest
         with:
-          args: detect --source /github/workspace --verbose --redact
+          args: detect --source . --verbose --redact
