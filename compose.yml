@@ -694,6 +694,7 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock:ro
         - ${PBS_CONFIG_LOCATION}:/root/.config/proxmox-backup/
         - ${ROOT}:/backups/config
+        - /backups/data:/backups/data
 
 networks:
   mailcow-network:
