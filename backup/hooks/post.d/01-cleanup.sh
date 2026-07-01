@@ -5,6 +5,6 @@ source /etc/s6-overlay/s6-rc.d/setup_check/run_include
 
 echo "Cleaning up local dumps..."
 
-find /backup/data -mindepth 1 -delete
+find /backups/data -mindepth 1 -delete
 
 echo "Cleanup complete."
