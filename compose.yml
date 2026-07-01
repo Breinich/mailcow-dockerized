@@ -681,6 +681,9 @@ services:
         PBS_ENDPOINT: ${PBS_ENDPOINT}
         POST_HOOK_DIR: /hooks/post.d
         PRE_HOOK_DIR: /hooks/pre.d
+        DBROOT: ${DBROOT}
+        REDISPASS: ${REDISPASS}
+        MAILCOW_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-mailcow-dockerized}
       tmpfs:
         - /run:exec
       volumes:
