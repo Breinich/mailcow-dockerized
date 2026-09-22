@@ -1,7 +1,9 @@
+FROM docker:cli AS docker-cli
+
 FROM aterfax/pbs-client:latest
 
-# Install Docker CLI to trigger mailcow backup scripts
-RUN apt-get update && apt-get install -y docker.io && rm -rf /var/lib/apt/lists/*
+# Copy only the Docker CLI; the backup container uses the host Docker socket.
+COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker
 
 COPY hooks/pre.d/  /hooks/pre.d/
 COPY hooks/post.d/ /hooks/post.d/
