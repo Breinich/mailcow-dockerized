@@ -133,9 +133,10 @@ backup_mysql() {
   [ -n "${MYSQL_VOL}" ] || { echo "Skipping mysql: volume not found"; return 0; }
   [ -n "${DBROOT_VAL}" ] || { echo "Error: DBROOT not found (set DBROOT env var)."; exit 1; }
 
-  local mysql_image mysql_network
+  local mysql_image mysql_network mysql_host
   mysql_image="$(docker inspect -f '{{.Config.Image}}' "${MYSQL_CTR}")"
   mysql_network="$(docker inspect -f '{{range $n, $v := .NetworkSettings.Networks}}{{println $n}}{{end}}' "${MYSQL_CTR}" | head -n1)"
+  mysql_host="mysql"
 
   docker run --name mailcow-backup --rm \
     --network "${mysql_network}" \
@@ -143,8 +144,9 @@ backup_mysql() {
     -t --entrypoint= \
     --sysctl net.ipv6.conf.all.disable_ipv6=1 \
     -e DBROOT="${DBROOT_VAL}" \
+    -e MYSQL_HOST="${mysql_host}" \
     -v "${SNAPSHOT_DIR}:/backup:z" \
-    "${mysql_image}" /bin/sh -c "mariabackup --host 127.0.0.1 --user root --password \"\$DBROOT\" --backup --rsync --target-dir=/backup_mariadb ; mariabackup --prepare --target-dir=/backup_mariadb ; chown -R 999:999 /backup_mariadb ; /bin/tar --warning='no-file-ignored' --use-compress-program='zstd --rsyncable' -Pcvpf /backup/backup_mariadb.tar.zst /backup_mariadb ;"
+    "${mysql_image}" /bin/sh -c "set -eu; mariabackup --host \\\"\\$MYSQL_HOST\\\" --user root --password \\\"\\$DBROOT\\\" --backup --target-dir=/backup_mariadb; mariabackup --prepare --target-dir=/backup_mariadb; chown -R 999:999 /backup_mariadb; /bin/tar --warning='no-file-ignored' --use-compress-program='zstd --rsyncable' -Pcvpf /backup/backup_mariadb.tar.zst /backup_mariadb"
 }
 
 archive_and_decompressor() {
