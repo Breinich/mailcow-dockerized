@@ -684,6 +684,11 @@ services:
         DBROOT: ${DBROOT}
         REDISPASS: ${REDISPASS}
         MAILCOW_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-mailcow-dockerized}
+      depends_on:
+        mysql-mailcow:
+          condition: service_started
+        redis-mailcow:
+          condition: service_started
       tmpfs:
         - /run:exec
       volumes:
