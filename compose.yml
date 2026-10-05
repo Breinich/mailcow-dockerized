@@ -730,11 +730,9 @@ networks:
   mailcow-network:
     driver: bridge
     driver_opts:
-      logging: *default-logging
       com.docker.network.bridge.name: br-mailcow
     enable_ipv6: ${ENABLE_IPV6:-true}
     ipam:
-      logging: *default-logging
       driver: default
       config:
         - subnet: ${IPV4_NETWORK:-172.22.1}.0/24
