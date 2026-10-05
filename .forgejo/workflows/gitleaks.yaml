@@ -1,0 +1,17 @@
+name: Secret Scanning
+on: [push, pull_request]
+
+jobs:
+  scan:
+    name: Gitleaks Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: docker://zricethezav/gitleaks:latest
+        with:
+          args: detect --source . --verbose --redact
