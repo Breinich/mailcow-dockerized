@@ -1,0 +1,21 @@
+name: Sync upstream mailcow
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 13 * * 1"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync and merge upstream repository
+        uses: dabreadman/sync-upstream-repo@v1.0.0.b
+        with:
+          upstream_repo: https://github.com/mailcow/mailcow-dockerized.git
+          upstream_branch: master
+          downstream_branch: main
+          token: ${{ secrets.GITHUB_TOKEN }}
