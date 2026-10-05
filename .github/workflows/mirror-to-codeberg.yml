@@ -22,17 +22,10 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Configure SSH
-        env:
-          CODEBERG_SSH_PRIVATE_KEY: ${{ secrets.CODEBERG_SSH_PRIVATE_KEY }}
-        run: |
-          install -m 700 -d ~/.ssh
-          printf '%s\n' "$CODEBERG_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan codeberg.org >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-
       - name: Push main to Codeberg
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
         run: |
-          git remote add codeberg git@codeberg.org:bajnok-lab/email.git
-          git push codeberg HEAD:main
+          auth=$(printf 'breinich:%s' "$CODEBERG_TOKEN" | base64 | tr -d '\n')
+          git -c http.extraheader="Authorization: Basic $auth" \
+            push https://codeberg.org/bajnok-lab/email.git HEAD:main
