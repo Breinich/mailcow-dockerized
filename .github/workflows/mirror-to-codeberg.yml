@@ -27,5 +27,10 @@ jobs:
           CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
         run: |
           auth=$(printf 'breinich:%s' "$CODEBERG_TOKEN" | base64 | tr -d '\n')
+          remote=https://codeberg.org/bajnok-lab/email.git
           git -c http.extraheader="Authorization: Basic $auth" \
-            push https://codeberg.org/bajnok-lab/email.git HEAD:main
+            fetch "$remote" +refs/heads/main:refs/remotes/codeberg/main
+          remote_main=$(git rev-parse refs/remotes/codeberg/main)
+          git -c http.extraheader="Authorization: Basic $auth" \
+            push --force-with-lease="refs/heads/main:$remote_main" \
+            "$remote" HEAD:main
