@@ -8,7 +8,7 @@ services:
 
     unbound-mailcow:
       logging: *default-logging
-      image: ghcr.io/mailcow/unbound:1.25
+      image: ghcr.io/mailcow/unbound:1.26.1-1
       environment:
         - TZ=${TZ}
         - SKIP_UNBOUND_HEALTHCHECK=${SKIP_UNBOUND_HEALTHCHECK:-n}
@@ -51,7 +51,7 @@ services:
 
     redis-mailcow:
       logging: *default-logging
-      image: redis:7.4.6-alpine
+      image: redis:7.4.11-alpine
       entrypoint: ["/bin/sh","/redis-conf.sh"]
       volumes:
         - redis-vol-1:/data/
@@ -75,7 +75,7 @@ services:
 
     clamd-mailcow:
       logging: *default-logging
-      image: ghcr.io/mailcow/clamd:1.71
+      image: ghcr.io/mailcow/clamd:1.4.6-1
       restart: always
       depends_on:
         unbound-mailcow:
@@ -95,7 +95,7 @@ services:
 
     rspamd-mailcow:
       logging: *default-logging
-      image: ghcr.io/mailcow/rspamd:3.14.3-1
+      image: ghcr.io/mailcow/rspamd:4.2.1-1
       stop_grace_period: 30s
       depends_on:
         - dovecot-mailcow
@@ -134,7 +134,7 @@ services:
 
     php-fpm-mailcow:
       logging: *default-logging
-      image: ghcr.io/mailcow/phpfpm:8.2.29-2
+      image: ghcr.io/mailcow/phpfpm:8.2.35-1
       command: "php-fpm -d date.timezone=${TZ} -d expose_php=0"
       depends_on:
         - redis-mailcow
@@ -218,7 +218,7 @@ services:
 
     sogo-mailcow:
       logging: *default-logging
-      image: ghcr.io/mailcow/sogo:5.12.5-3
+      image: ghcr.io/mailcow/sogo:5.12.12-1
       environment:
         - DBNAME=${DBNAME}
         - DBUSER=${DBUSER}
@@ -359,7 +359,7 @@ services:
 
     postfix-mailcow:
       logging: *default-logging
-      image: ghcr.io/mailcow/postfix:3.7.11-2
+      image: ghcr.io/mailcow/postfix:3.10.12-1
       depends_on:
         mysql-mailcow:
           condition: service_started
@@ -403,7 +403,7 @@ services:
 
     postfix-tlspol-mailcow:
       logging: *default-logging
-      image: ghcr.io/mailcow/postfix-tlspol:1.8.23
+      image: ghcr.io/mailcow/postfix-tlspol:1.14.0
       depends_on:
         unbound-mailcow:
           condition: service_healthy
@@ -442,7 +442,7 @@ services:
         - php-fpm-mailcow
         - sogo-mailcow
         - rspamd-mailcow
-      image: ghcr.io/mailcow/nginx:1.06
+      image: ghcr.io/mailcow/nginx:1.30.6-1
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       environment:
@@ -489,7 +489,7 @@ services:
           condition: service_started
         unbound-mailcow:
           condition: service_healthy
-      image: ghcr.io/mailcow/acme:1.97
+      image: ghcr.io/mailcow/acme:1.98
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       environment:
@@ -678,7 +678,6 @@ services:
       depends_on:
         - sogo-mailcow
         - dovecot-mailcow
-        - rspamd-mailcow
       labels:
         ofelia.enabled: "true"
       security_opt:
@@ -689,7 +688,7 @@ services:
         mailcow-network:
           aliases:
             - ofelia
-            
+
     backup-mailcow:
       logging: *default-logging
       hostname: mailcow
